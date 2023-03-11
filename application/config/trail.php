@@ -27,7 +27,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Set [TRUE/FALSE] to use of audit trail
 |
 */
-$config['audit_enable'] = FALSE;
+$config['audit_enable'] = TRUE;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +41,7 @@ $config['audit_enable'] = FALSE;
 $config['not_allowed_tables'] = [
     'ci_sessions',
     'user_audit_trails',
+    'tblUsers',
 ];
 
 /*
