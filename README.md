@@ -17,7 +17,7 @@ Now you are ready to browse the application.
 
         CREATE TABLE `user_audit_trails` (
           `id` int(11) NOT NULL,
-          `user_id` int(11) NOT NULL,
+          `user_id` varchar(20) NOT NULL,
           `event` enum('insert','update','delete') NOT NULL,
           `table_name` varchar(128) NOT NULL,
           `old_values` text,
