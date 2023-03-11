@@ -49,8 +49,9 @@ class MY_DB_mysqli_driver extends CI_DB_mysqli_driver
      */
     public function insert($table = '', $set = NULL, $escape = NULL)
     {
+        $set_1 = isset($this->qb_set) ? $this->qb_set : ""; 
         $status = parent::insert($table , $set, $escape);
-        $this->trail($status,'insert', $table, $set);
+        $this->trail($status,'insert', $table, $set_1);
        
         return $status;
     }
@@ -100,10 +101,12 @@ class MY_DB_mysqli_driver extends CI_DB_mysqli_driver
 
         $query->free_result();
 
+
         $this->qb_where = $condition; // reset where condition
 
+        $set_1 = isset($this->qb_set) ? $this->qb_set : ""; 
         $status= parent::update($table, $set, $where, $limit);
-        $this->trail($status,'update', $table, $set, $previous_values);
+        $this->trail($status,'update', $table, $set_1, $previous_values);
 
         return $status;
     }
@@ -169,7 +172,7 @@ class MY_DB_mysqli_driver extends CI_DB_mysqli_driver
 
 
         if($event == 'update') {
-            $this->diff_on_update($previous_values, $set);
+            // $this->diff_on_update($previous_values, $set);
             //data has not been update
             if(empty($previous_values) && empty($set))
                 return 1;
@@ -182,12 +185,14 @@ class MY_DB_mysqli_driver extends CI_DB_mysqli_driver
 
         return parent::insert('user_audit_trails' ,
             [
-                'user_id' => $this->CI->auth->userID,
+                // 'user_id' => $this->CI->auth->userID,
+                'user_id' => $this->CI->session->userdata('user_id_ara'),
                 'event' => $event,
                 'table_name' => $table,
                 'old_values' => $old_value,
                 'new_values' => $new_value,
-                'url' => $this->CI->uri->ruri_string(),
+                'url' => $this->CI->uri->uri_string(),
+                'name' => "NA",
                 'ip_address' => $this->CI->input->ip_address(),
                 'user_agent' => $this->CI->input->user_agent(),
                 'created_at' => date('Y-m-d H:i:s'),
@@ -212,7 +217,7 @@ class MY_DB_mysqli_driver extends CI_DB_mysqli_driver
                         $new[$key] = $new_value[$key];
                     }
                 } else {
-                     $old[$key] = '';
+                    //  $old[$key] = '';
                      $new[$key] = $new_value[$key];
                 }
             }
